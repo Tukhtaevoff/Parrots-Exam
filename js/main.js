@@ -16,10 +16,7 @@ const renderParrot = (parrot) => {
         img,
         price,
         birthDate,
-        sizes: {
-            width,
-            height
-        },
+        sizes,
         isFavorite,
         features
     } = parrot;
@@ -39,8 +36,7 @@ const renderParrot = (parrot) => {
     const parrotsBirthDate = templateBox.querySelector(".parrots__date");
     parrotsBirthDate.textContent = birthDate;
 
-    const parrotsSize = templateBox.querySelector(".parrots__subtitle");
-    parrotsSize.textContent = `${width} x ${height}`;
+    templateBox.querySelector(".parrots__subtitle").textContent = "118sm" + "x" + "224sm";
 
     // const parrotIsFavorite = templateBox.querySelector(".parrots__star-btn");
     const parrotFeatures = templateBox.querySelector(".parrots__list-item");
@@ -137,13 +133,13 @@ if (evt.target.matches(".btn-danger")) {
     showingParrots.splice(delBtnIdx, 1)
     localStorage.setItem("products", JSON.stringify(showingParrots));
     renderParrots();
-    
-} else if (evt.target.matches(".btn-secondary")) {
+
+} else if (evt.target.matches(".parrots__edit-btn")) {
 
     const editedId = +evt.target.dataset.edit;
 
     const editedBtnId = showingParrots.find((parrot) => {
-       return parrot.id = editedId;
+       return parrot.id === editedId;
     })
 
     editTitleValue.value = editedBtnId.title;
@@ -156,8 +152,8 @@ if (evt.target.matches(".btn-danger")) {
 
     editForm.setAttribute("data-editing", editedBtnId.id);
 
-    renderParrots();
 }
+renderParrots();
 })
 
 editForm.addEventListener("submit", (evt) => {
@@ -173,11 +169,10 @@ editForm.addEventListener("submit", (evt) => {
     const heightValue = editHeightValue.value;
     const featuresValue = editFeaturesValue.value;
 
-    if (nameValue && imgValue && priceValue && birthDateValue && widthValue && heightValue && featuresValue) {
         const parrot = {
-            id: Math.floor(Math.random() * 100),
+            id: idEdit,
             title: nameValue,
-            img: String(imgValue),
+            img: imgValue,
             price: priceValue,
             birthDate: birthDateValue,
             size: {
@@ -188,23 +183,24 @@ editForm.addEventListener("submit", (evt) => {
         }
 
         const editShowingParrotIdx = showingParrots.findIndex(parrot => {
-            return parrot.id = idEdit;
+            return parrot.id === idEdit;
         })
         const editParrotIdx = products.findIndex(parrot => {
-            return parrot.id = idEdit;
+            return parrot.id === idEdit;
         })
 
+        products.splice(editParrotIdx, 1, parrot);
         showingParrots.splice(editShowingParrotIdx, 1, parrot);
-        products.splice(editParrotIdx, 1, parrot)
 
         localStorage.setItem("products", JSON.stringify(products));
 
         editForm.reset();
         editParrotsModal.hide();
-    }
+    
 
     renderParrots();
 })
+renderParrots();
 
 
 
