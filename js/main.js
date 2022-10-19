@@ -129,6 +129,7 @@ if (evt.target.matches(".btn-danger")) {
     const delBtnIdx = showingParrots.findIndex(product =>{
         return product.id === delIdx;
     })
+    
     products.splice(delBtnIdx, 1);  
     showingParrots.splice(delBtnIdx, 1)
     localStorage.setItem("products", JSON.stringify(showingParrots));
